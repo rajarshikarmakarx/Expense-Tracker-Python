@@ -10,7 +10,9 @@ def main():
         print("3. Exit")
         operationNum = int(input("Select any option:"))
         if operationNum==1:
-             getNewEntry()
+             expense = getNewEntry()
+             print(expense)
+             
         elif operationNum==2:
             displayEntries()
         elif operationNum==3:
@@ -22,7 +24,7 @@ def main():
 
 # Add A  New Entry
 def getNewEntry():
-    expense_date = input("Enter date (DD-MM-YYYY): ")
+    expense_date = datetime.strptime(input("Enter date (DD-MM-YYYY): "), "%d-%m-%Y")
     expense_name = input("Enter the expense:")
     expense_amount = int(input("Enter Amount:"))
     Categories = [
@@ -32,7 +34,7 @@ def getNewEntry():
         "📚 Education",
         "🎮 Entertainment",
         "🎁 Gifts / Others"]
-    date_obj = datetime.strptime(expense_date, "%d-%m-%Y")
+    
     while True:
         for i, category in enumerate(Categories):
             print(i+1, f"." ,category)
@@ -43,13 +45,17 @@ def getNewEntry():
             return new_expense
         else:
             print("Invalid category, please try again! \n")
+    
+    
+            
         
     
     
 
     
     
-    
+
+
 
 
 
