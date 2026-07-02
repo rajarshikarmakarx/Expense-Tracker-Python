@@ -86,6 +86,3 @@ The file uses `utf-8-sig` encoding to ensure emoji categories display correctly 
 - Amounts are stored as integers; the `Expense` class formats them with two decimal places when printed via `repr()`.
 - Invalid inputs (bad date formats, non-numeric amounts, out-of-range category choices) are caught and the prompt repeats rather than crashing the program.
 
-## License
-
-This project currently has no license specified. Add one (e.g., MIT) if you plan to share or open-source it.
