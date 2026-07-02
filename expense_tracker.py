@@ -104,11 +104,24 @@ def displayEntries():
         return
 
     try:
+        total = 0
         with open("expenses.csv", "r", newline="", encoding="utf-8-sig") as ExpDatabase:
             csv_reader = csv.reader(ExpDatabase)
-            print(tabulate(csv_reader,  tablefmt="rounded_grid", colalign=("left", "left", "left", "right")))   
+            data = list(csv_reader)
+            #calculating total spent
+            for row in data[1:]: #ignoring the header row
+                total = total+float(row[3])
+            data.append([
+                "", "", "TOTAL SPENT", f"₹{total}"
+            ])
 
 
+
+            print(tabulate(data,  headers="firstrow",tablefmt="rounded_grid", colalign=("left", "left", "left", "right")))   
+            
+           
+    
+        
     except Exception as e:
         print(f"Error reading file: {e}")
 
