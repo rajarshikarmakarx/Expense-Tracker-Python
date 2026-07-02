@@ -47,8 +47,8 @@ def getNewEntry():
     
 # Save the Entry
 def saveNewEntry(expense:Expense):
+    file_exists = os.path.exists("expenses.csv")
     with open('expenses.csv', 'a', newline="", encoding="utf-8-sig") as ExpDatabase:
-        file_exists = os.path.exists("expenses.csv")
         csv_writer = csv.writer(ExpDatabase)
         if not file_exists:
             csv_writer.writerow(["Date", "Name", "Category", "Amount"])
@@ -56,12 +56,17 @@ def saveNewEntry(expense:Expense):
         csv_writer.writerow([expense.date.strftime("%d-%m-%Y"), expense.name, expense.category, expense.amount])
         
         
-
-
 # View all Entries
 def displayEntries():
-    print("Hiiiiiii testingggg ")
+    with open('expenses.csv', 'r', newline="", encoding="utf-8-sig") as ExpDatabase:
+        file_exists = os.path.exists("expenses.csv")
+        csv_reader = csv.reader(ExpDatabase)
+        if not file_exists:
+            print("Invalid funtion, entries dont exist")
+        for row in csv_reader:
+            print(row)
 
+    
 
 
 if __name__=="__main__":
