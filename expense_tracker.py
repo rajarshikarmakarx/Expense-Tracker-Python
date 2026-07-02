@@ -64,11 +64,9 @@ def displayEntries():
         if not file_exists:
             print("Invalid funtion, entries dont exist")
         for row in csv_reader:
-            print(row)
+            print(row[0], row[1], row[2], row[3])
 
     
-
-
 if __name__=="__main__":
     main()
 
