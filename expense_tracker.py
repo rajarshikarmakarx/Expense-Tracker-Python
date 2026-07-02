@@ -1,7 +1,8 @@
 from expense import Expense
 from datetime import datetime
 import sys
-
+import csv
+import os
 def main():
     while True:
         print("Welcome to Expense Tracker 💰")
@@ -10,8 +11,8 @@ def main():
         print("3. Exit")
         operationNum = int(input("Select any option:"))
         if operationNum==1:
-             expense = getNewEntry()
-             print(expense)
+            expense = getNewEntry()
+            saveNewEntry(expense)
              
         elif operationNum==2:
             displayEntries()
@@ -19,8 +20,6 @@ def main():
             sys.exit()
         else:
             print("Invalid option, please try again! \n")
-
-
 
 # Add A  New Entry
 def getNewEntry():
@@ -46,26 +45,19 @@ def getNewEntry():
         else:
             print("Invalid category, please try again! \n")
     
-    
-            
-        
-    
-    
-
-    
-    
-
-
-
-
-
-
-
-
-
 # Save the Entry
-def saveNewEntry():
-    pass
+def saveNewEntry(expense:Expense):
+    with open('expenses.csv', 'a', newline="", encoding="utf-8-sig") as ExpDatabase:
+        file_exists = os.path.exists("expenses.csv")
+        csv_writer = csv.writer(ExpDatabase)
+        if not file_exists:
+            csv_writer.writerow(["Date", "Name", "Category", "Amount"])
+
+        csv_writer.writerow([expense.date.strftime("%d-%m-%Y"), expense.name, expense.category, expense.amount])
+        
+        
+
+
 # View all Entries
 def displayEntries():
     print("Hiiiiiii testingggg ")
