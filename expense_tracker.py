@@ -43,7 +43,7 @@ def getNewEntry():
     expense_name = input("Enter the expense:")
     while True:
         try:
-            expense_amount = int(input("Enter Amount: "))
+            expense_amount = float(input("Enter Amount: "))
             if  expense_amount < 0:
                 print("Amount cannot be negative.")
                 continue
