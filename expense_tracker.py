@@ -3,6 +3,8 @@ from datetime import datetime
 import sys
 import csv
 import os
+from tabulate import tabulate ## for appropriate functioning depending on the system, install wcwidth, pip install wcwidth
+
 def main():
     while True:
         print("Welcome to Expense Tracker 💰")
@@ -104,11 +106,8 @@ def displayEntries():
     try:
         with open("expenses.csv", "r", newline="", encoding="utf-8-sig") as ExpDatabase:
             csv_reader = csv.reader(ExpDatabase)
+            print(tabulate(csv_reader,  tablefmt="rounded_grid", colalign=("left", "left", "left", "right")))   
 
-            next(csv_reader, None) 
-
-            for row in csv_reader:
-                print(row[0], row[1], row[2], row[3])
 
     except Exception as e:
         print(f"Error reading file: {e}")
