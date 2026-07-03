@@ -1,5 +1,9 @@
 try.py
 expenses.csv
 __pycache__
+
+# Word documents
+*.docx
+
+# Only ignore specific doc if needed
 Description.docx
-*docx

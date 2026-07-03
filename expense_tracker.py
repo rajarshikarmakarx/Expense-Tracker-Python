@@ -1,18 +1,26 @@
 from expense import Expense
 from datetime import datetime
+from datetime import date
 import sys
 import csv
 import os
 from tabulate import tabulate ## for appropriate functioning depending on the system, install wcwidth, pip install wcwidth
+import pandas as pd
+
+
 
 def main():
     while True:
-        print("Welcome to Expense Tracker 💰")
+        print("\n====== Expense Tracker 💰 ======")
         print("1. Add a New Entry")
-        print("2. View Existing Entries")
-        print("3. Exit")
+        print("2. View All Expenses")
+        print("3. Category Summary")
+        print("4. Monthly Spending")
+        print("5. Exit")
+        print("===============================")
         try:
             operationNum = int(input("Select any option:"))
+            print(" ")
         except ValueError:
             print("Please enter a valid number\n")
             continue
@@ -25,6 +33,11 @@ def main():
             elif operationNum==2:
                 displayEntries()
             elif operationNum==3:
+                displayCategorySummary()
+            elif operationNum==4:
+                displayMonthlySpending()
+            elif operationNum==5:
+                print("exiting.....")
                 sys.exit()
             else:
                 print("Invalid option, please try again! \n")
@@ -97,6 +110,8 @@ def saveNewEntry(expense:Expense):
     
     except OSError as e:
         print(f"Error saving file: {e}")    
+
+
 # View all Entries
 def displayEntries():
     if not os.path.exists("expenses.csv"):
@@ -117,13 +132,48 @@ def displayEntries():
 
 
 
-            print(tabulate(data,  headers="firstrow",tablefmt="rounded_grid", colalign=("left", "left", "left", "right")))   
+            print(tabulate(data,  headers="firstrow",tablefmt="grid", colalign=("left", "left", "left", "right")))   
             
            
     
         
     except Exception as e:
         print(f"Error reading file: {e}")
+
+
+#Display Category-wise summary
+def displayCategorySummary():
+    if not os.path.exists("expenses.csv"):
+        print("No entries found.")
+        return
+
+    try:
+        df = pd.read_csv("expenses.csv")
+        grouped = (df.groupby("Category", as_index=False)["Amount"].sum()).rename(columns = {"Amount": "Total"})
+        result = grouped.to_dict(orient = "records")
+        print(tabulate(result, headers = "keys", tablefmt="grid"))
+        
+    except Exception as e:
+        print(f"Error reading file: {e}")
+
+def displayMonthlySpending():
+    if not os.path.exists("expenses.csv"):
+        print("No entries found.")
+        return
+
+    try:
+        df = pd.read_csv("expenses.csv")
+        df["Date"] = pd.to_datetime(df["Date"], format="%d-%m-%Y")
+        df["Month"] = df["Date"].dt.strftime("%B %Y")
+        grouped = (df.groupby("Month", as_index=False)["Amount"].sum()).rename(columns = {"Amount": "Total"})
+        result = grouped.to_dict(orient = "records")
+        print(tabulate(result, headers = "keys", tablefmt="grid"))
+        
+    except Exception as e:
+        print(f"Error reading file: {e}")
+
+        #.strftime('%b') 
+
 
     
 if __name__=="__main__":
