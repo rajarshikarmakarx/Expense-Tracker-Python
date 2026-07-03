@@ -7,10 +7,13 @@ from tabulate import tabulate ## for appropriate functioning depending on the sy
 
 def main():
     while True:
-        print("Welcome to Expense Tracker 💰")
+        print("\n====== Expense Tracker 💰 ======")
         print("1. Add a New Entry")
-        print("2. View Existing Entries")
-        print("3. Exit")
+        print("2. View All Expenses")
+        print("3. Category Summary")
+        print("4. Monthly Spending")
+        print("5. Exit")
+        print("===============================")
         try:
             operationNum = int(input("Select any option:"))
         except ValueError:
@@ -25,6 +28,10 @@ def main():
             elif operationNum==2:
                 displayEntries()
             elif operationNum==3:
+                displayCategorySummary()
+            elif operationNum==4:
+                displayMonthlySpending()
+            elif operationNum==5:
                 sys.exit()
             else:
                 print("Invalid option, please try again! \n")
@@ -97,6 +104,8 @@ def saveNewEntry(expense:Expense):
     
     except OSError as e:
         print(f"Error saving file: {e}")    
+
+
 # View all Entries
 def displayEntries():
     if not os.path.exists("expenses.csv"):
@@ -124,6 +133,14 @@ def displayEntries():
         
     except Exception as e:
         print(f"Error reading file: {e}")
+
+
+#Display Category-wise summary
+def displayCategorySummary():
+    pass
+
+def displayMonthlySpending():
+    pass
 
     
 if __name__=="__main__":

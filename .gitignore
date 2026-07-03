@@ -1,4 +1,5 @@
 try.py
 expenses.csv
 __pycache__
-Description.docx
+*.docx
+*.txt
