@@ -40,7 +40,7 @@ def getNewEntry():
             break
         except ValueError:
             print("Invalid date format. Use DD-MM-YYYY.")
-    expense_name = input("Enter the expense:")
+    expense_name = input("Enter the expense name:")
     while True:
         try:
             expense_amount = float(input("Enter Amount: "))
