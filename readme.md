@@ -110,7 +110,6 @@ The file uses `utf-8-sig` encoding to ensure emoji categories display correctly 
 
 - Amounts are stored as floats, allowing decimal values (e.g., `99.99`).
 - **"Total spent" is all-time, not scoped to a period.** It's the sum of every row in `expenses.csv` from the first entry ever added to the most recent one — no date filtering is applied. Weekly/yearly totals will come with the search/filter features planned for v2.x.
-- The `Expense` class formats amounts with a `$` sign and two decimal places when printed via `repr()`, while the CSV/report views use `₹` for the total — keep this in mind if you want currency symbols to match throughout.
 - Invalid inputs (bad date formats, non-numeric amounts, out-of-range category choices) are caught and the prompt repeats rather than crashing the program.
 - `deleteEntries()` and `editEntries()` are present as placeholder functions and not yet implemented — planned for v2.0.
 
@@ -154,7 +153,7 @@ The file uses `utf-8-sig` encoding to ensure emoji categories display correctly 
 - [ ] Colorful CLI (via `rich`)
 - [ ] Pie chart of expenses (via `matplotlib`)
 - [ ] Backup/restore data
-- [ ] Consistent currency symbol across all views (currently `$` in `repr()` vs `₹` in reports)
+- [ ] Mobile app (APK) / web integration — expose the tracker via a web backend (e.g., Flask/FastAPI) and build a companion mobile or web front-end
 
 ## License
 
