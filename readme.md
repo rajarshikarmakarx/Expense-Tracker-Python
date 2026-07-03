@@ -1,5 +1,7 @@
 # Expense Tracker 💰
 
+**Current version: v1.2** (Data Analysis) ✅
+
 A simple command-line expense tracker built in Python. Log your daily expenses with a date, name, category, and amount, then view them individually, grouped by category, or summarized by month — all backed by a local CSV file.
 
 ## Features
@@ -107,16 +109,52 @@ The file uses `utf-8-sig` encoding to ensure emoji categories display correctly 
 ## Notes
 
 - Amounts are stored as floats, allowing decimal values (e.g., `99.99`).
+- **"Total spent" is all-time, not scoped to a period.** It's the sum of every row in `expenses.csv` from the first entry ever added to the most recent one — no date filtering is applied. Weekly/yearly totals will come with the search/filter features planned for v2.x.
 - The `Expense` class formats amounts with a `$` sign and two decimal places when printed via `repr()`, while the CSV/report views use `₹` for the total — keep this in mind if you want currency symbols to match throughout.
 - Invalid inputs (bad date formats, non-numeric amounts, out-of-range category choices) are caught and the prompt repeats rather than crashing the program.
-- `deleteEntries()` and `editEntries()` are present as placeholder functions and not yet implemented — planned for future updates.
+- `deleteEntries()` and `editEntries()` are present as placeholder functions and not yet implemented — planned for v2.0.
 
-## Roadmap
+## Version Roadmap
 
-- [ ] Implement entry editing (`editEntries`)
-- [ ] Implement entry deletion (`deleteEntries`)
-- [ ] Consistent currency symbol across all views
-- [ ] Export/filter by date range
+### ✅ v1.0 — Core (Done)
+- Menu loop
+- Add expense / create `Expense` object
+- Save to CSV / load CSV
+- View all entries
+- Exit
+
+### ✅ v1.1 — Make it usable (Done)
+- Formatted table display (via `tabulate`) instead of raw printed rows
+- Total spending shown at the bottom of the "View All Expenses" table
+
+### ✅ v1.2 — Data analysis (Done — current version)
+- Category summary (totals grouped by category, via `pandas`)
+- Monthly spending (totals grouped by month, via `pandas`)
+
+### 🔲 v2.0 — Real application features (Next up)
+- [ ] Delete an expense entry
+- [ ] Edit an expense entry (e.g., change amount)
+- [ ] Rewriting/updating the CSV safely after edits/deletes
+
+### 🔲 v2.1 — Polish
+- [ ] Improved error handling & input validation
+- [ ] Better menus
+- [ ] Split code into `main.py`, `expense.py`, `storage.py`, `utils.py`
+
+### 🔲 v3.0 — Upgrade (pick one)
+- [ ] SQLite database (replace `expenses.csv` with `expenses.db`)
+- [ ] GUI (Tkinter)
+- [ ] Charts (matplotlib)
+
+### ⭐ Stretch goals
+- [ ] Search/filter by category, name, date, or amount range
+- [ ] Sort by amount/date
+- [ ] Top 5 biggest expenses
+- [ ] Undo last deletion
+- [ ] Colorful CLI (via `rich`)
+- [ ] Pie chart of expenses (via `matplotlib`)
+- [ ] Backup/restore data
+- [ ] Consistent currency symbol across all views (currently `$` in `repr()` vs `₹` in reports)
 
 ## License
 
