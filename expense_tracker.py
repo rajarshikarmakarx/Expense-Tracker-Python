@@ -7,43 +7,99 @@ import os
 from tabulate import tabulate ## for appropriate functioning depending on the system, install wcwidth, pip install wcwidth
 import pandas as pd
 
-
-
 def main():
     while True:
         print("\n====== Expense Tracker 💰 ======")
-        print("1. Add a New Entry")
-        print("2. View All Expenses")
-        print("3. Category Summary")
-        print("4. Monthly Spending")
-        print("5. Exit")
-        print("===============================")
-        try:
-            operationNum = int(input("Select any option:"))
-            print(" ")
-        except ValueError:
-            print("Please enter a valid number\n")
-            continue
-        
-        try:
-            if operationNum==1:
-                expense = getNewEntry()
-                saveNewEntry(expense)
-             
-            elif operationNum==2:
-                displayEntries()
-            elif operationNum==3:
-                displayCategorySummary()
-            elif operationNum==4:
-                displayMonthlySpending()
-            elif operationNum==5:
-                print("exiting.....")
-                sys.exit()
-            else:
-                print("Invalid option, please try again! \n")
+        print("1. Expenses")
+        print("2. Reports")
+        print("0. Exit")
 
-        except Exception as e:
-            print("Something went wrong:", e)
+        try:
+            choice = int(input("Select option: "))
+        except ValueError:
+            print("Enter a valid number\n")
+            continue
+
+        if choice == 1:
+            expenses_menu()
+
+        elif choice == 2:
+            reports_menu()
+
+        elif choice == 0:
+            print("Exiting...")
+            sys.exit()
+
+        else:
+            print("Invalid option\n")
+
+def expenses_menu():
+    while True:
+        print("\n====== Expenses ======")
+        print("1. Add Expense")
+        print("2. View All Expenses")
+        print("3. Edit Expense")
+        print("4. Delete Expense")
+        print("0. Back")
+
+        try:
+            choice = int(input("Select option: "))
+        except ValueError:
+            print("Enter a valid number\n")
+            continue
+
+        if choice == 1:
+            expense = getNewEntry()
+            saveNewEntry(expense)
+
+        elif choice == 2:
+            displayEntries()
+
+        elif choice == 3:
+            editEntries()
+
+        elif choice == 4:
+            deleteEntries()
+
+        elif choice == 0:
+            break
+
+        else:
+            print("Invalid option\n")
+
+
+def reports_menu():
+    while True:
+        print("\n====== Reports ======")
+        print("1. Category Summary")
+        print("2. Monthly Spending")
+        print("0. Back")
+
+        try:
+            choice = int(input("Select option: "))
+        except ValueError:
+            print("Enter a valid number\n")
+            continue
+
+        if choice == 1:
+            displayCategorySummary()
+
+        elif choice == 2:
+            displayMonthlySpending()
+
+        elif choice == 0:
+            break
+
+        else:
+            print("Invalid option\n")
+
+    
+
+
+
+
+
+
 
 # Add A  New Entry
 def getNewEntry():
@@ -172,7 +228,11 @@ def displayMonthlySpending():
     except Exception as e:
         print(f"Error reading file: {e}")
 
-        #.strftime('%b') 
+def deleteEntries():
+    pass
+
+def editEntries():
+    pass
 
 
     
