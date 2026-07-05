@@ -4,8 +4,11 @@ from datetime import date
 import sys
 import csv
 import os
-from tabulate import tabulate ## for appropriate functioning depending on the system, install wcwidth, pip install wcwidth
+from tabulate import (
+    tabulate,
+)  ## for appropriate functioning depending on the system, install wcwidth, pip install wcwidth
 import pandas as pd
+
 
 def main():
     while True:
@@ -35,6 +38,7 @@ def main():
 
         else:
             print("Invalid option\n")
+
 
 def expenses_menu():
     while True:
@@ -104,19 +108,14 @@ def reports_menu():
             print("\n")
             print("Invalid option\n")
 
-    
-
-
-
-
-
-
 
 # Add A  New Entry
 def getNewEntry():
     while True:
         try:
-            expense_date = datetime.strptime(input("Enter date (DD-MM-YYYY): "),"%d-%m-%Y")
+            expense_date = datetime.strptime(
+                input("Enter date (DD-MM-YYYY): "), "%d-%m-%Y"
+            )
             break
         except ValueError:
             print("Invalid date format. Use DD-MM-YYYY.")
@@ -124,7 +123,7 @@ def getNewEntry():
     while True:
         try:
             expense_amount = float(input("Enter Amount: "))
-            if  expense_amount < 0:
+            if expense_amount < 0:
                 print("Amount cannot be negative.")
                 continue
             break
@@ -136,8 +135,9 @@ def getNewEntry():
         "🥕 Grocery",
         "📚 Education",
         "🎮 Entertainment",
-        "🎁 Gifts / Others"]
-    
+        "🎁 Gifts / Others",
+    ]
+
     while True:
         for i, category in enumerate(Categories):
             print(i + 1, ".", category)
@@ -149,10 +149,10 @@ def getNewEntry():
                 expense_category = Categories[expense_categoryIndex]
 
                 new_expense = Expense(
-                date=expense_date,
-                name=expense_name,
-                category=expense_category,
-                amount=expense_amount
+                    date=expense_date,
+                    name=expense_name,
+                    category=expense_category,
+                    amount=expense_amount,
                 )
 
                 return new_expense
@@ -162,21 +162,28 @@ def getNewEntry():
 
         except ValueError:
             print("Please enter a valid number.\n")
-    
+
+
 # Save the Entry
-def saveNewEntry(expense:Expense):
+def saveNewEntry(expense: Expense):
     try:
         file_exists = os.path.exists("expenses.csv")
-        with open('expenses.csv', 'a', newline="", encoding="utf-8-sig") as ExpDatabase:
+        with open("expenses.csv", "a", newline="", encoding="utf-8-sig") as ExpDatabase:
             csv_writer = csv.writer(ExpDatabase)
             if not file_exists:
                 csv_writer.writerow(["Date", "Name", "Category", "Amount"])
 
-            csv_writer.writerow([expense.date.strftime("%d-%m-%Y"), expense.name, expense.category, expense.amount])
-        
-    
+            csv_writer.writerow(
+                [
+                    expense.date.strftime("%d-%m-%Y"),
+                    expense.name,
+                    expense.category,
+                    expense.amount,
+                ]
+            )
+
     except OSError as e:
-        print(f"Error saving file: {e}")    
+        print(f"Error saving file: {e}")
 
 
 # View all Entries
@@ -190,25 +197,25 @@ def displayEntries():
         with open("expenses.csv", "r", newline="", encoding="utf-8-sig") as ExpDatabase:
             csv_reader = csv.reader(ExpDatabase)
             data = list(csv_reader)
-            #calculating total spent
-            for row in data[1:]: #ignoring the header row
-                total = total+float(row[3])
-            data.append([
-                "", "", "TOTAL SPENT", f"₹{total}"
-            ])
+            # calculating total spent
+            for row in data[1:]:  # ignoring the header row
+                total = total + float(row[3])
+            data.append(["", "", "TOTAL SPENT", f"₹{total}"])
 
+            print(
+                tabulate(
+                    data,
+                    headers="firstrow",
+                    tablefmt="grid",
+                    colalign=("left", "left", "left", "right"),
+                )
+            )
 
-
-            print(tabulate(data,  headers="firstrow",tablefmt="grid", colalign=("left", "left", "left", "right")))   
-            
-           
-    
-        
     except Exception as e:
         print(f"Error reading file: {e}")
 
 
-#Display Category-wise summary
+# Display Category-wise summary
 def displayCategorySummary():
     if not os.path.exists("expenses.csv"):
         print("No entries found.")
@@ -216,13 +223,17 @@ def displayCategorySummary():
 
     try:
         df = pd.read_csv("expenses.csv")
-        grouped = (df.groupby("Category", as_index=False)["Amount"].sum()).rename(columns = {"Amount": "Total"})
-        result = grouped.to_dict(orient = "records")
-        print(tabulate(result, headers = "keys", tablefmt="grid"))
-        
+        grouped = (df.groupby("Category", as_index=False)["Amount"].sum()).rename(
+            columns={"Amount": "Total"}
+        )
+        result = grouped.to_dict(orient="records")
+        print(tabulate(result, headers="keys", tablefmt="grid"))
+
     except Exception as e:
         print(f"Error reading file: {e}")
-#Display Monthly Spending
+
+
+# Display Monthly Spending
 def displayMonthlySpending():
     if not os.path.exists("expenses.csv"):
         print("No entries found.")
@@ -232,67 +243,107 @@ def displayMonthlySpending():
         df = pd.read_csv("expenses.csv")
         df["Date"] = pd.to_datetime(df["Date"], format="%d-%m-%Y")
         df["Month"] = df["Date"].dt.strftime("%B %Y")
-        grouped = (df.groupby("Month", as_index=False)["Amount"].sum()).rename(columns = {"Amount": "Total"})
-        result = grouped.to_dict(orient = "records")
-        print(tabulate(result, headers = "keys", tablefmt="grid"))
-        
+        grouped = (df.groupby("Month", as_index=False)["Amount"].sum()).rename(
+            columns={"Amount": "Total"}
+        )
+        result = grouped.to_dict(orient="records")
+        print(tabulate(result, headers="keys", tablefmt="grid"))
+
     except Exception as e:
         print(f"Error reading file: {e}")
 
+# Edit Entries
 def editEntries():
-    pass
+    ###DUMMY CODE 
+    if not os.path.exists("expenses.csv"):
+        print("No entries found.")
+    try:
+        df = pd.read_csv("expenses.csv")
+        df.index = df.index + 1
+        print(tabulate(df, headers="keys"))
 
-    
+        # Input Validation
+        while True:
+            entry_input = input("Enter Entry Number to Delete: ")
 
+            if not entry_input.isdigit():
+                print("Invalid input. Please enter a number.")
+                continue
+
+            entryNumber = int(entry_input)
+
+            if entryNumber < 1 or entryNumber > len(df):
+                print("That entry number doesn't exist.")
+                continue
+
+            break
+
+        print("Delete this expense? \n")
+        row_to_delete = df.iloc[entryNumber - 1].to_dict()
+        for key, value in row_to_delete.items():
+            print(f"{key} - {value}")
+        confirmation = input(
+            "Press and Enter Y to confirm deletion, N to cancel deletion:").upper()
+        if confirmation not in ["Y", "N"]:
+            print("Please Enter a valid Input by trying again!")
+        elif confirmation == "Y":
+            df.drop(df.index[entryNumber - 1], inplace=True)
+            df.to_csv("expenses.csv", index=False)
+
+            print("Successfully Deleted!!")
+        elif confirmation == "N":
+            print("Operation cancelled")
+
+    except Exception as e:
+        print(f"Error reading file: {e}")
 
 
 # Delete Entry
 def deleteEntries():
     if not os.path.exists("expenses.csv"):
-            print("No entries found.")
-    
+        print("No entries found.")
+
     try:
-            df = pd.read_csv("expenses.csv")
-            df.index = df.index + 1
-            print(tabulate(df, headers="keys"))
+        df = pd.read_csv("expenses.csv")
+        df.index = df.index + 1
+        print(tabulate(df, headers="keys"))
 
-            # Input Validation
-            while True:
-                entry_input = input("Enter Entry Number to Delete: ")
+        # Input Validation
+        while True:
+            entry_input = input("Enter Entry Number to Delete: ")
 
-                if not entry_input.isdigit():
-                    print("Invalid input. Please enter a number.")
-                    continue
+            if not entry_input.isdigit():
+                print("Invalid input. Please enter a number.")
+                continue
 
-                entryNumber = int(entry_input)
+            entryNumber = int(entry_input)
 
-                if entryNumber < 1 or entryNumber > len(df):
-                    print("That entry number doesn't exist.")
-                    continue
+            if entryNumber < 1 or entryNumber > len(df):
+                print("That entry number doesn't exist.")
+                continue
 
-                break
+            break
 
-            print("Delete this expense? \n")
-            row_to_delete=df.iloc[entryNumber-1].to_dict()
-            for key, value in row_to_delete.items():
-              print(f"{key} - {value}")
-            confirmation = input("Press and Enter Y to confirm deletion, N to cancel deletion:").upper()
-            if confirmation not in ['Y', 'N']:
-                print("Please Enter a valid Input by trying again!")
-            elif confirmation =="Y":
-              df.drop(df.index[entryNumber-1], inplace=True)
-              df.to_csv("expenses.csv", index=False)
+        print("Delete this expense? \n")
+        row_to_delete = df.iloc[entryNumber - 1].to_dict()
+        for key, value in row_to_delete.items():
+            print(f"{key} - {value}")
+        confirmation = input(
+            "Press and Enter Y to confirm deletion, N to cancel deletion:"
+        ).upper()
+        if confirmation not in ["Y", "N"]:
+            print("Please Enter a valid Input by trying again!")
+        elif confirmation == "Y":
+            df.drop(df.index[entryNumber - 1], inplace=True)
+            df.to_csv("expenses.csv", index=False)
 
-              print("Successfully Deleted!!")
-            elif confirmation=="N":
-              print("Operation cancelled")
-            
-    
-            
+            print("Successfully Deleted!!")
+        elif confirmation == "N":
+            print("Operation cancelled")
+
     except Exception as e:
-            print(f"Error reading file: {e}")   
-    
-if __name__=="__main__":
+        print(f"Error reading file: {e}")
+
+
+if __name__ == "__main__":
     main()
-
-
