@@ -21,12 +21,15 @@ def main():
             continue
 
         if choice == 1:
+            print("\n")
             expenses_menu()
 
         elif choice == 2:
+            print("\n")
             reports_menu()
 
         elif choice == 0:
+            print("\n")
             print("Exiting...")
             sys.exit()
 
@@ -49,22 +52,27 @@ def expenses_menu():
             continue
 
         if choice == 1:
+            print("\n")
             expense = getNewEntry()
             saveNewEntry(expense)
 
         elif choice == 2:
+            print("\n")
             displayEntries()
 
         elif choice == 3:
+            print("\n")
             editEntries()
 
         elif choice == 4:
+            print("\n")
             deleteEntries()
 
         elif choice == 0:
             break
 
         else:
+            print("\n")
             print("Invalid option\n")
 
 
@@ -82,15 +90,18 @@ def reports_menu():
             continue
 
         if choice == 1:
+            print("\n")
             displayCategorySummary()
 
         elif choice == 2:
+            print("\n")
             displayMonthlySpending()
 
         elif choice == 0:
             break
 
         else:
+            print("\n")
             print("Invalid option\n")
 
     
@@ -211,7 +222,7 @@ def displayCategorySummary():
         
     except Exception as e:
         print(f"Error reading file: {e}")
-
+#Display Monthly Spending
 def displayMonthlySpending():
     if not os.path.exists("expenses.csv"):
         print("No entries found.")
@@ -228,13 +239,58 @@ def displayMonthlySpending():
     except Exception as e:
         print(f"Error reading file: {e}")
 
-def deleteEntries():
-    pass
-
 def editEntries():
     pass
 
+    
 
+
+
+# Delete Entry
+def deleteEntries():
+    if not os.path.exists("expenses.csv"):
+            print("No entries found.")
+    
+    try:
+            df = pd.read_csv("expenses.csv")
+            df.index = df.index + 1
+            print(tabulate(df, headers="keys"))
+
+            # Input Validation
+            while True:
+                entry_input = input("Enter Entry Number to Delete: ")
+
+                if not entry_input.isdigit():
+                    print("Invalid input. Please enter a number.")
+                    continue
+
+                entryNumber = int(entry_input)
+
+                if entryNumber < 1 or entryNumber > len(df):
+                    print("That entry number doesn't exist.")
+                    continue
+
+                break
+
+            print("Delete this expense? \n")
+            row_to_delete=df.iloc[entryNumber-1].to_dict()
+            for key, value in row_to_delete.items():
+              print(f"{key} - {value}")
+            confirmation = input("Press and Enter Y to confirm deletion, N to cancel deletion:").upper()
+            if confirmation not in ['Y', 'N']:
+                print("Please Enter a valid Input by trying again!")
+            elif confirmation =="Y":
+              df.drop(df.index[entryNumber-1], inplace=True)
+              df.to_csv("expenses.csv", index=False)
+
+              print("Successfully Deleted!!")
+            elif confirmation=="N":
+              print("Operation cancelled")
+            
+    
+            
+    except Exception as e:
+            print(f"Error reading file: {e}")   
     
 if __name__=="__main__":
     main()

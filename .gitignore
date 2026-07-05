@@ -7,3 +7,4 @@ __pycache__
 future_ideas.txt
 # Only ignore specific doc if needed
 Description.docx
+*.ipynb
