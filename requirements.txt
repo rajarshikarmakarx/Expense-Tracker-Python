@@ -1,0 +1,4 @@
+pandas==3.0.3
+tabulate==0.10.0
+wcwidth
+
