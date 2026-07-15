@@ -25,31 +25,11 @@ A simple command-line expense tracker built in Python. Log your daily expenses w
 
 ```
 .
-├── main.py               # Entry point — main menu, expenses submenu, reports submenu
-├── expense_manager.py    # Expense CRUD operations (create, save, update, delete)
-├── reports.py            # Reporting functions (view all, category summary, monthly summary)
+├── expense_tracker.py   # Main CLI application (menu, input handling, CSV I/O)
 ├── expense.py            # Expense data model
-├── requirements.txt      # External dependencies (pandas, tabulate, wcwidth)
+├── requirements.txt       # External dependencies (pandas, tabulate, wcwidth)
 └── expenses.csv           # Generated automatically on first entry (not included)
 ```
-
-### Module Overview
-
-- **`main.py`**
-  - `main()` — top-level menu (Expenses / Reports / Exit)
-  - `expenses_menu()` — Add / View / Edit / Delete submenu
-  - `reports_menu()` — Category Summary / Monthly Spending submenu
-- **`expense_manager.py`**
-  - `create_expense()` — prompt for and build a new `Expense`
-  - `save_expense()` — append a new expense to `expenses.csv`
-  - `update_expense()` — edit a field on an existing expense
-  - `delete_expense()` — remove an existing expense (with confirmation)
-- **`reports.py`**
-  - `show_all_expenses()` — print every saved expense with a running total
-  - `show_category_summary()` — totals spending per category
-  - `show_monthly_summary()` — totals spending per month
-- **`expense.py`**
-  - `Expense` — data model for a single expense record
 
 ## Requirements
 
@@ -67,7 +47,7 @@ A simple command-line expense tracker built in Python. Log your daily expenses w
 ## Getting Started
 
 1. Clone or download this repository.
-2. Make sure `main.py`, `expense_manager.py`, `reports.py`, and `expense.py` are all in the same directory.
+2. Make sure `expense.py` and `expense_tracker.py` are in the same directory.
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -75,7 +55,7 @@ A simple command-line expense tracker built in Python. Log your daily expenses w
 4. Run the tracker:
 
    ```bash
-   python main.py
+   python expense_tracker.py
    ```
 
 ## Usage
@@ -137,8 +117,3 @@ The file uses `utf-8-sig` encoding to ensure emoji categories display correctly 
 - Amounts are stored as integers/floats; the `Expense` class formats them with two decimal places when printed via `repr()`.
 - Invalid inputs (bad date formats, non-numeric amounts, out-of-range category/field/ID choices) are caught and the prompt repeats rather than crashing the program.
 - Editing or deleting an entry re-indexes rows starting at 1 for display purposes; this ID is not stored in the CSV and may shift after a delete.
-
-## Version History
-
-- **v2.1** — Refactor only, no functional changes. Split the single-file CLI into `main.py`, `expense_manager.py`, and `reports.py`; renamed functions to follow PEP 8 (`snake_case`) naming conventions.
-- **v2.0** — Added Edit Expense and Delete Expense functionality; restructured the CLI into Expenses and Reports submenus.
