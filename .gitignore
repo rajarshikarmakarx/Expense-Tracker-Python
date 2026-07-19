@@ -10,3 +10,5 @@ Description.docx
 *.ipynb
 .venv
 expense_tracker_backup.py
+testDB
+expenses.db
