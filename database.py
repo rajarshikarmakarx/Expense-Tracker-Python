@@ -125,9 +125,9 @@ def reports_menu():
             print("\n")
             displayCategorySummary()
 
-        # elif choice == 2:
-        #     print("\n")
-        #     show_monthly_spending()
+        elif choice == 2:
+             print("\n")
+             displayMonthlySpending()
 
         elif choice == 0:
             break
@@ -198,7 +198,7 @@ def save_expense(expense: Expense):
         cursor.execute(
             "INSERT INTO expenses (Date, Name, Category, Amount) VALUES(?, ?, ?, ?)",
             (
-                expense.date.strftime("%d-%m-%Y"),
+                expense.date.strftime("%Y-%m-%d"),
                 expense.name,
                 expense.category,
                 expense.amount
@@ -214,7 +214,7 @@ def displayEntries():
     try:
         total = 0
         table = []
-        cursor.execute("SELECT * FROM expenses")
+        cursor.execute("SELECT strftime('%d-%m-%Y', Date) AS Date, Name, Category, Amount FROM expenses;")
         rows = cursor.fetchall()
         if not rows:
             print("No entries found.")
@@ -249,6 +249,29 @@ def displayCategorySummary():
 
     except Exception as e:
         print(f"Unexpected error: {e}")
+
+
+# Display Monthly Spending
+def displayMonthlySpending():
+    try:
+        cursor.execute(""" SELECT strftime('%Y-%m', Date) AS Month,
+                            SUM(Amount) AS "Total Spending"
+                            FROM expenses
+                            GROUP BY strftime('%Y-%m', Date)
+                            ORDER BY strftime('%Y-%m', Date)""")
+        rows = cursor.fetchall()
+        if not rows:
+            print("No entries found.")
+            return
+        table = list(rows)
+        headers = [ "MONTH", "TOTAL SPENT"]
+        print(tabulate(table, headers=headers, tablefmt="grid"))
+    except sqlite3.OperationalError:
+            print("Expenses database is not initialized.")
+    
+    except Exception as e:
+            print(f"Unexpected error: {e}")
+
 
 
 
